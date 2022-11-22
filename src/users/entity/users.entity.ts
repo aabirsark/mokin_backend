@@ -1,6 +1,7 @@
 import { ActivityEntity } from 'src/activity/entities/activity.entity';
 import { Thoughts } from 'src/thoughts/entites/thought.entity';
 import {
+  BaseEntity,
   Column,
   Entity,
   JoinColumn,
@@ -11,8 +12,10 @@ import {
 import { ContactInfoEntity } from './contact_info.entity';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
+export class User extends BaseEntity {
+  @PrimaryGeneratedColumn({
+    type: 'bigint',
+  })
   id: number;
 
   @Column({ unique: true })
@@ -24,7 +27,7 @@ export class User {
   @Column()
   name: string;
 
-  @Column({ default: Date.now() })
+  @Column({ default: Date.now() ,type : "bigint"  })
   createdAt: number;
 
   @OneToOne(() => ContactInfoEntity, (contactInfo) => contactInfo.user)
@@ -34,6 +37,6 @@ export class User {
   @OneToMany(() => Thoughts, (thoughts) => thoughts.user)
   thoughts: Thoughts[];
 
-  @OneToMany(() => ActivityEntity , activity => activity.activiyByUserId  )
-  recentActivites : ActivityEntity[]
+  @OneToMany(() => ActivityEntity, (activity) => activity.activiyByUserId)
+  recentActivites: ActivityEntity[];
 }

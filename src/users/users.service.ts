@@ -35,15 +35,33 @@ export class UsersService {
   // add contact info
   async createContactInfo(info: ContactInfo) {
     const user = await this.userRepo.findOneBy({ id: info.userId });
+
     if (user) {
-      const contact = this.contactInfo.create({
+      const alreadyContact = await this.contactInfo.findOne({
+        where: {
+          user: {
+            id: user.id,
+          },
+        },
+      });
+
+      if (alreadyContact) {
+        alreadyContact.address = info.address;
+        alreadyContact.bio = info.bio;
+        alreadyContact.email = info.email;
+        alreadyContact.phone = info.phone;
+        return this.contactInfo.save(alreadyContact);
+      }
+
+      const newContact = this.contactInfo.create({
         email: info.email,
         address: info.address,
         phone: info.phone,
+        bio: info.bio,
         user: user,
       });
 
-      const savedContact = await this.contactInfo.save(contact);
+      const savedContact = await this.contactInfo.save(newContact);
       return savedContact;
     }
 
@@ -66,10 +84,24 @@ export class UsersService {
 
   async findUserProfile(id: number): Promise<User> {
     return this.userRepo.findOne({
+      order: {
+        thoughts: {
+          created_At: 'DESC',
+        },
+      },
+      select: {
+        id: true,
+        username: true,
+        name: true,
+        createdAt: true,
+      },
       where: {
         id,
       },
-      relations: ['contactInfo', 'thoughts'],
+      relations: {
+        contactInfo: true,
+        thoughts: true,
+      },
     });
   }
 

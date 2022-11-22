@@ -31,6 +31,7 @@ export class AuthController {
       email: body.email,
       address: body.address,
       phone: body.phone,
+      bio: body.bio,
     });
   }
 

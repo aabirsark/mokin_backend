@@ -1,9 +1,11 @@
 class ContactInfo {
   userId: number;
 
-  email: string;
+  email?: string;
 
   address?: string;
 
-  phone: string;
+  phone?: string;
+
+  bio? : string;
 }

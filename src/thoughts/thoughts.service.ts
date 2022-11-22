@@ -10,7 +10,7 @@ import { User } from 'src/users/entity/users.entity';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { ThoughtDTO } from './dto/thought.dto';
-import { Thoughts } from './entites/thought.entity';
+import {Thoughts} from './entites/thought.entity';
 
 @Injectable()
 export class ThoughtsService {
@@ -45,6 +45,9 @@ export class ThoughtsService {
         id: true,
         quote: true,
         created_At: true,
+      },
+      order: {
+        id: 'DESC',
       },
       relations: {
         user: true,

@@ -35,14 +35,16 @@ export class AuthService {
   async validateUser(username: string, pass: string) {
     const user = await this.userService.findUser(username);
 
-    const isUser = await bcrypt.compare(pass, user.password);
+    if (user) {
+      const isUser = await bcrypt.compare(pass, user.password);
 
-    console.log(user);
-    console.log(isUser);
+      console.log(user);
+      console.log(isUser);
 
-    if (user && isUser) {
-      const { password, ...result } = user;
-      return result;
+      if (user && isUser) {
+        const { password, ...result } = user;
+        return result;
+      }
     }
 
     return null;
@@ -85,10 +87,11 @@ export class AuthService {
 
   // return the refresh and JWT token
   async returnTokens(user: any): Promise<any> {
-    console.log(user);
     return {
       refresh: await this.generateRefreshToken(user),
       access_token: await this.generateJWT(user),
+      name: user.name,
+      username: user.username,
     };
   }
 
@@ -104,6 +107,7 @@ export class AuthService {
 
       if (user) {
         isRefreshTokenPresent.value = randString;
+        isRefreshTokenPresent.expiryAt = this.generateExpiryDate();
         await this.refreshTokenRepo.save(isRefreshTokenPresent);
 
         return {

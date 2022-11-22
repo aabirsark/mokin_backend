@@ -1,8 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class RefreshTokenEntity {
-  @PrimaryGeneratedColumn()
+export class RefreshTokenEntity extends BaseEntity {
+  @PrimaryGeneratedColumn({
+    type: 'bigint',
+  })
   id: number;
 
   @Column({ unique: true })
@@ -11,9 +13,9 @@ export class RefreshTokenEntity {
   @Column()
   userId: number;
 
-  @Column({ default: Date.now() })
+  @Column({ default: Date.now(), type: 'bigint' })
   createdAt: number;
 
-  @Column({})
+  @Column({ type: 'bigint' })
   expiryAt: number;
 }

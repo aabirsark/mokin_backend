@@ -1,20 +1,31 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User } from "./users.entity";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { User } from './users.entity';
 
 @Entity()
-export class ContactInfoEntity {
-    @PrimaryGeneratedColumn()
-    id : number;
+export class ContactInfoEntity extends BaseEntity {
+  @PrimaryGeneratedColumn({
+    type: 'bigint',
+  })
+  id: number;
 
-    @Column()
-    email : string;
+  @Column({ nullable: true })
+  email?: string;
 
-    @Column({nullable : true})
-    address? : string;
+  @Column({ nullable: true })
+  address?: string;
 
-    @Column({ nullable : true})
-    phone : string;
+  @Column({ nullable: true })
+  phone?: string;
 
-    @OneToOne(() => User, user => user.contactInfo)
-    user : User;
+  @Column({ nullable: true })
+  bio?: string;
+
+  @OneToOne(() => User, (user) => user.contactInfo, { onDelete: 'CASCADE' })
+  user: User;
 }

@@ -1,6 +1,7 @@
 import { Thoughts } from 'src/thoughts/entites/thought.entity';
 import { User } from 'src/users/entity/users.entity';
 import {
+  BaseEntity,
   Column,
   Entity,
   ManyToOne,
@@ -9,8 +10,10 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class ActivityEntity {
-  @PrimaryGeneratedColumn()
+export class ActivityEntity extends BaseEntity {
+  @PrimaryGeneratedColumn({
+    type: 'bigint',
+  })
   id: number;
 
   @Column()
@@ -27,7 +30,7 @@ export class ActivityEntity {
   @Column({ nullable: true })
   value: string;
 
-  @Column({ default: Date.now() })
+  @Column({ default: Date.now(), type: 'bigint' })
   createdAt: number;
 
   @ManyToOne(() => Thoughts, (thoughts) => thoughts.activites)

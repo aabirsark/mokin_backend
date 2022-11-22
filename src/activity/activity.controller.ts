@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   HttpException,
   HttpStatus,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -40,5 +42,16 @@ export class ActivityController {
       },
       HttpStatus.BAD_REQUEST,
     );
+  }
+
+  @UseGuards(JWTAuthGuard)
+  @Get('getUserActivites')
+  async getUserActivity(@Req() req) {
+    return this.activityService.getUserActivity(req.user.userId);
+  }
+
+  @Get('/comments/:id')
+  async getCommentsOfPost(@Param('id') id: number) {
+    return this.activityService.getComments(id);
   }
 }

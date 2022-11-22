@@ -1,11 +1,10 @@
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions';
 
-const config: SqliteConnectionOptions = {
-  type: 'sqlite',
+const config: PostgresConnectionOptions = {
+  type: 'postgres',
   database: 'mokinDb',
   entities: ['dist/src/**/*.entity.js'],
-  synchronize: true,
-  logging: true,
 };
 
 export default config;
